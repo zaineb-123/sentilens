@@ -1,0 +1,9 @@
+process.env.NODE_ENV = "test";
+process.env.JWT_ACCESS_SECRET = "test-access-secret";
+process.env.INTERNAL_SERVICE_KEY = "test-internal-key";
+process.env.AUTH_SERVICE_URL = "http://auth-service.test:4001";
+process.env.ORGANIZATION_SERVICE_URL = "http://organization-service.test:4002";
+process.env.SURVEY_SERVICE_URL = "http://survey-service.test:4003";
+process.env.FEEDBACK_SERVICE_URL = "http://feedback-service.test:4004";
+process.env.ANALYTICS_SERVICE_URL = "http://analytics-service.test:4006";
+process.env.NOTIFICATION_SERVICE_URL = "http://notification-service.test:4007";

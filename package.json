@@ -1,0 +1,18 @@
+{
+  "name": "sentilens",
+  "private": true,
+  "version": "0.1.0",
+  "description": "SentiLens: AI-powered employee feedback intelligence (microservices monorepo)",
+  "workspaces": [
+    "shared",
+    "frontend",
+    "services/*"
+  ],
+  "scripts": {
+    "test:ai": "cd services/ai-service && python -m pytest",
+    "up": "docker compose up --build"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.7"
+  }
+}

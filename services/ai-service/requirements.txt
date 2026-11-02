@@ -1,0 +1,9 @@
+fastapi>=0.110,<1
+uvicorn[standard]>=0.29
+pydantic>=2.6,<3
+pydantic-settings>=2.2
+lingua-language-detector>=2.0
+transformers>=4.44,<5
+sentencepiece>=0.2
+protobuf>=4.25
+numpy>=1.26

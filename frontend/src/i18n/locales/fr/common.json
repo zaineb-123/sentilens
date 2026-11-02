@@ -1,0 +1,71 @@
+{
+  "app": { "name": "SentiLens", "tagline": "Comprendre les retours. Améliorer le lieu de travail." },
+  "nav": {
+    "dashboard": "Tableau de bord", "surveys": "Sondages", "feedback": "Retours", "analytics": "Analyses",
+    "sentiment": "Sentiment", "emotions": "Émotions", "aspects": "Aspects", "trends": "Tendances",
+    "departments": "Départements", "alerts": "Alertes", "reports": "Rapports", "profile": "Profil",
+    "privacy": "Confidentialité", "history": "Historique", "users": "Utilisateurs", "organizations": "Organisations",
+    "roles": "Rôles", "auditLogs": "Journaux d'audit", "monitoring": "Supervision", "settings": "Paramètres",
+    "notifications": "Notifications", "logout": "Déconnexion"
+  },
+  "common": {
+    "save": "Enregistrer", "cancel": "Annuler", "delete": "Supprimer", "edit": "Modifier", "create": "Créer",
+    "publish": "Publier", "close": "Clôturer", "submit": "Envoyer", "back": "Retour", "next": "Suivant",
+    "loading": "Chargement…", "search": "Rechercher", "filter": "Filtrer", "export": "Exporter",
+    "required": "Obligatoire", "optional": "Facultatif", "confirm": "Confirmer", "retry": "Réessayer",
+    "viewAll": "Tout voir", "noResults": "Aucun résultat", "day": "Jour", "department": "Département",
+    "from": "Du", "to": "Au", "status": "Statut", "actions": "Actions"
+  },
+  "auth": {
+    "login": "Connexion", "loginCta": "Se connecter", "email": "Email", "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?", "resetPassword": "Réinitialiser le mot de passe",
+    "noAccount": "Vous avez une invitation ?", "register": "Créer un compte", "invitationCode": "Code d'invitation",
+    "newPassword": "Nouveau mot de passe", "loginError": "Email ou mot de passe incorrect.",
+    "resetSent": "Si ce compte existe, un lien de réinitialisation a été généré.",
+    "resetSuccess": "Mot de passe mis à jour. Vous pouvez vous connecter."
+  },
+  "landing": {
+    "hero.title": "SentiLens", "hero.subtitle": "Intelligence du feedback employé propulsée par l'IA",
+    "hero.description": "Les entreprises collectent du feedback par sondages, formulaires ou boîtes à suggestions — mais analyser des centaines de réponses à la main est difficile. SentiLens utilise l'IA pour comprendre le sentiment, les émotions et les sujets récurrents, tout en protégeant l'anonymat.",
+    "cta.start": "Commencer", "cta.demo": "Explorer la démo",
+    "how.title": "Comment ça marche", "how.step1": "Collecter le feedback", "how.step2": "Analyser avec l'IA",
+    "how.step3": "Comprendre les tendances", "how.step4": "Agir en connaissance de cause",
+    "features.title": "Fonctionnalités", "privacy.title": "Confidentialité et anonymat"
+  },
+  "employee": {
+    "dashboard.title": "Tableau de bord employé", "dashboard.availableSurveys": "Sondages disponibles",
+    "dashboard.participation": "Ma participation", "surveys.empty": "Aucun sondage disponible pour le moment.",
+    "feedback.anonymousTitle": "Retour anonyme", "feedback.commentLabel": "Votre commentaire",
+    "feedback.commentPlaceholder": "Partagez votre ressenti sur votre environnement de travail…",
+    "feedback.privacyNote": "Ce retour n'enregistre ni votre identité, ni votre adresse IP, ni votre navigateur.",
+    "feedback.submit": "Envoyer le retour", "feedback.successTitle": "Retour envoyé",
+    "feedback.receiptLabel": "Votre code de reçu", "feedback.receiptNote": "Conservez ce code pour suivre le statut de l'analyse — il ne permet à personne de vous identifier.",
+    "history.title": "Historique de participation", "history.empty": "Vous n'avez participé à aucun sondage pour le moment."
+  },
+  "hr": {
+    "dashboard.title": "Tableau de bord RH", "kpi.total": "Total des retours", "kpi.positive": "Positif",
+    "kpi.participation": "Taux de participation", "kpi.activeSurveys": "Sondages actifs", "kpi.alerts": "Alertes",
+    "insights.title": "Analyses IA", "explorer.title": "Explorateur de retours",
+    "surveys.title": "Gestion des sondages", "surveys.create": "Créer un sondage",
+    "builder.title": "Constructeur de sondage", "builder.addQuestion": "Ajouter une question",
+    "builder.preview": "Aperçu", "builder.saveDraft": "Enregistrer comme brouillon"
+  },
+  "privacyState": {
+    "suppressed": "Données insuffisantes pour garantir l'anonymat.",
+    "explain": "Pour protéger l'identité des employés, SentiLens n'affiche les statistiques détaillées que lorsqu'un groupe compte au moins {{minGroupSize}} réponses. Ce groupe en compte actuellement {{responseCount}}."
+  },
+  "admin": {
+    "dashboard.title": "Tableau de bord administrateur", "users.invite": "Inviter un utilisateur",
+    "users.status.active": "Actif", "users.status.invited": "Invité", "users.status.disabled": "Désactivé",
+    "monitoring.title": "Supervision des services", "monitoring.overall.up": "Opérationnel",
+    "monitoring.overall.degraded": "Dégradé", "roles.title": "Rôles et permissions",
+    "roles.note": "SentiLens utilise 3 rôles fixes. Il n'existe pas encore de système de permissions granulaire configurable."
+  },
+  "system": {
+    "notFound.title": "Page introuvable", "notFound.description": "La page que vous cherchez n'existe pas.",
+    "unauthorized.title": "Accès refusé", "unauthorized.description": "Vous n'avez pas les droits nécessaires pour voir cette page.",
+    "serviceUnavailable.title": "Service indisponible", "serviceUnavailable.description": "Un service est temporairement injoignable. Veuillez réessayer.",
+    "error.title": "Une erreur est survenue", "empty.default": "Rien à afficher pour le moment.",
+    "aiProcessing": "Analyse IA en cours…", "backHome": "Retour à l'accueil"
+  }
+}

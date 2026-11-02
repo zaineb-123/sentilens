@@ -1,0 +1,71 @@
+{
+  "app": { "name": "SentiLens", "tagline": "Understand feedback. Improve the workplace." },
+  "nav": {
+    "dashboard": "Dashboard", "surveys": "Surveys", "feedback": "Feedback", "analytics": "Analytics",
+    "sentiment": "Sentiment", "emotions": "Emotions", "aspects": "Aspects", "trends": "Trends",
+    "departments": "Departments", "alerts": "Alerts", "reports": "Reports", "profile": "Profile",
+    "privacy": "Privacy", "history": "History", "users": "Users", "organizations": "Organizations",
+    "roles": "Roles", "auditLogs": "Audit Logs", "monitoring": "Monitoring", "settings": "Settings",
+    "notifications": "Notifications", "logout": "Log out"
+  },
+  "common": {
+    "save": "Save", "cancel": "Cancel", "delete": "Delete", "edit": "Edit", "create": "Create",
+    "publish": "Publish", "close": "Close", "submit": "Submit", "back": "Back", "next": "Next",
+    "loading": "Loading…", "search": "Search", "filter": "Filter", "export": "Export",
+    "required": "Required", "optional": "Optional", "confirm": "Confirm", "retry": "Retry",
+    "viewAll": "View all", "noResults": "No results", "day": "Day", "department": "Department",
+    "from": "From", "to": "To", "status": "Status", "actions": "Actions"
+  },
+  "auth": {
+    "login": "Log in", "loginCta": "Log in", "email": "Email", "password": "Password",
+    "forgotPassword": "Forgot password?", "resetPassword": "Reset password",
+    "noAccount": "Have an invitation?", "register": "Create account", "invitationCode": "Invitation code",
+    "newPassword": "New password", "loginError": "Incorrect email or password.",
+    "resetSent": "If that account exists, a reset link was generated.",
+    "resetSuccess": "Password updated. You can now log in."
+  },
+  "landing": {
+    "hero.title": "SentiLens", "hero.subtitle": "AI-powered employee feedback intelligence",
+    "hero.description": "Companies collect feedback through surveys, forms and suggestion boxes — but analyzing hundreds of responses by hand is hard. SentiLens uses AI to understand sentiment, emotions and recurring topics, while protecting anonymity.",
+    "cta.start": "Get Started", "cta.demo": "Explore Demo",
+    "how.title": "How it works", "how.step1": "Collect feedback", "how.step2": "Analyze with AI",
+    "how.step3": "Understand trends", "how.step4": "Take informed action",
+    "features.title": "Features", "privacy.title": "Privacy & anonymity"
+  },
+  "employee": {
+    "dashboard.title": "Employee dashboard", "dashboard.availableSurveys": "Available surveys",
+    "dashboard.participation": "My participation", "surveys.empty": "No surveys available right now.",
+    "feedback.anonymousTitle": "Anonymous feedback", "feedback.commentLabel": "Your comment",
+    "feedback.commentPlaceholder": "Share how you feel about your work environment…",
+    "feedback.privacyNote": "This feedback does not store your identity, IP address, or browser.",
+    "feedback.submit": "Submit feedback", "feedback.successTitle": "Feedback submitted",
+    "feedback.receiptLabel": "Your receipt code", "feedback.receiptNote": "Keep this code to check the analysis status — it cannot be used to identify you.",
+    "history.title": "Participation history", "history.empty": "You haven't participated in any survey yet."
+  },
+  "hr": {
+    "dashboard.title": "HR dashboard", "kpi.total": "Total feedback", "kpi.positive": "Positive",
+    "kpi.participation": "Participation rate", "kpi.activeSurveys": "Active surveys", "kpi.alerts": "Alerts",
+    "insights.title": "AI Insights", "explorer.title": "Feedback explorer",
+    "surveys.title": "Survey management", "surveys.create": "Create survey",
+    "builder.title": "Survey builder", "builder.addQuestion": "Add question",
+    "builder.preview": "Preview", "builder.saveDraft": "Save as draft"
+  },
+  "privacyState": {
+    "suppressed": "Not enough responses to protect anonymity.",
+    "explain": "To protect employee identity, SentiLens only displays detailed statistics once a group has at least {{minGroupSize}} responses. This group currently has {{responseCount}}."
+  },
+  "admin": {
+    "dashboard.title": "Admin dashboard", "users.invite": "Invite user",
+    "users.status.active": "Active", "users.status.invited": "Invited", "users.status.disabled": "Disabled",
+    "monitoring.title": "Service monitoring", "monitoring.overall.up": "Operational",
+    "monitoring.overall.degraded": "Degraded", "roles.title": "Roles & permissions",
+    "roles.note": "SentiLens uses 3 fixed roles. A configurable, fine-grained permission system does not exist yet."
+  },
+  "system": {
+    "notFound.title": "Page not found", "notFound.description": "The page you're looking for doesn't exist.",
+    "unauthorized.title": "Access denied", "unauthorized.description": "You don't have the rights to view this page.",
+    "serviceUnavailable.title": "Service unavailable", "serviceUnavailable.description": "A service is temporarily unreachable. Please try again.",
+    "error.title": "Something went wrong", "empty.default": "Nothing to show yet.",
+    "aiProcessing": "AI analysis in progress…", "backHome": "Back to home"
+  }
+}

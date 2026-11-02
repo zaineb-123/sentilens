@@ -1,0 +1,32 @@
+{
+  "app": { "name": "SentiLens", "tagline": "افهم آراء الموظفين. حسّن بيئة العمل." },
+  "nav": {
+    "dashboard": "لوحة التحكم", "surveys": "الاستبيانات", "feedback": "الملاحظات", "analytics": "التحليلات",
+    "sentiment": "المشاعر", "emotions": "الانفعالات", "aspects": "الجوانب", "trends": "الاتجاهات",
+    "departments": "الأقسام", "alerts": "التنبيهات", "reports": "التقارير", "profile": "الملف الشخصي",
+    "privacy": "الخصوصية", "history": "السجل", "users": "المستخدمون", "organizations": "المؤسسات",
+    "roles": "الأدوار", "auditLogs": "سجلات التدقيق", "monitoring": "المراقبة", "settings": "الإعدادات",
+    "notifications": "الإشعارات", "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "save": "حفظ", "cancel": "إلغاء", "delete": "حذف", "edit": "تعديل", "create": "إنشاء",
+    "publish": "نشر", "close": "إغلاق", "submit": "إرسال", "back": "رجوع", "next": "التالي",
+    "loading": "جارٍ التحميل…", "search": "بحث", "filter": "تصفية", "export": "تصدير",
+    "required": "إلزامي", "optional": "اختياري", "confirm": "تأكيد", "retry": "إعادة المحاولة",
+    "viewAll": "عرض الكل", "noResults": "لا توجد نتائج", "day": "اليوم", "department": "القسم",
+    "from": "من", "to": "إلى", "status": "الحالة", "actions": "الإجراءات"
+  },
+  "auth": {
+    "login": "تسجيل الدخول", "loginCta": "تسجيل الدخول", "email": "البريد الإلكتروني", "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟", "resetPassword": "إعادة تعيين كلمة المرور",
+    "noAccount": "لديك دعوة؟", "register": "إنشاء حساب", "invitationCode": "رمز الدعوة",
+    "newPassword": "كلمة مرور جديدة", "loginError": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+    "resetSent": "إذا كان هذا الحساب موجودًا، فقد تم إنشاء رابط إعادة التعيين.",
+    "resetSuccess": "تم تحديث كلمة المرور."
+  },
+  "system": {
+    "notFound.title": "الصفحة غير موجودة", "unauthorized.title": "الوصول مرفوض",
+    "serviceUnavailable.title": "الخدمة غير متاحة", "error.title": "حدث خطأ ما",
+    "empty.default": "لا يوجد شيء لعرضه بعد.", "backHome": "العودة إلى الصفحة الرئيسية"
+  }
+}

@@ -1,0 +1,292 @@
+# Grows phase by phase. Currently: MongoDB + AI service.
+name: sentilens
+
+# Only api-gateway (the single public API entry point) and mailpit (a dev inbox UI) publish
+# host ports. Every backend service - AI, Auth, Organization, Survey, Feedback, Analysis,
+# Analytics, Notification - is reachable only on the internal `backend` network, per the
+# architecture rule: the frontend talks to the gateway, never directly to a microservice.
+# For local debugging of one service's own Swagger UI, temporarily add a `ports:` mapping
+# to that service, or use `docker compose exec <service> curl http://localhost:<port>/docs`.
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "127.0.0.1:27017:27017"
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:?set MONGO_ROOT_USER in .env}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD in .env}
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [backend]
+
+  ai-service:
+    build:
+      context: ./services/ai-service
+      args:
+        PRELOAD_MODELS: ${AI_PRELOAD_MODELS:-true}
+        AI_MODEL_PROFILE: ${AI_MODEL_PROFILE:-light}
+    restart: unless-stopped
+    environment:
+      AI_ENGINE: ${AI_ENGINE:-transformers}
+      AI_MODEL_PROFILE: ${AI_MODEL_PROFILE:-light}
+      AI_INTERNAL_KEY: ${AI_INTERNAL_KEY:?set AI_INTERNAL_KEY in .env}
+      AI_EAGER_LOAD: "true"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health/ready').status==200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 240s
+    networks: [backend]
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      PORT: 4001
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/auth_db?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?set JWT_REFRESH_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4001/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  organization-service:
+    build:
+      context: .
+      dockerfile: services/organization-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      PORT: 4002
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/org_db?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4002/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  survey-service:
+    build:
+      context: .
+      dockerfile: services/survey-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      PORT: 4003
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/survey_db?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4003/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  feedback-service:
+    build:
+      context: .
+      dockerfile: services/feedback-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      survey-service:
+        condition: service_healthy
+      organization-service:
+        condition: service_healthy
+    environment:
+      PORT: 4004
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/feedback_db?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+      SURVEY_SERVICE_URL: http://survey-service:4003
+      ORGANIZATION_SERVICE_URL: http://organization-service:4002
+      ANALYSIS_SERVICE_URL: http://analysis-service:4005
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4004/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  analysis-service:
+    build:
+      context: .
+      dockerfile: services/analysis-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      feedback-service:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
+    environment:
+      PORT: 4005
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/analysis_db?authSource=admin
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+      FEEDBACK_SERVICE_URL: http://feedback-service:4004
+      AI_SERVICE_URL: http://ai-service:8000
+      AI_INTERNAL_KEY: ${AI_INTERNAL_KEY:?set AI_INTERNAL_KEY in .env}
+      ANALYTICS_SERVICE_URL: http://analytics-service:4006
+      POLL_INTERVAL_MS: 5000
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4005/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  analytics-service:
+    build:
+      context: .
+      dockerfile: services/analytics-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      organization-service:
+        condition: service_healthy
+    environment:
+      PORT: 4006
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/analytics_db?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+      ORGANIZATION_SERVICE_URL: http://organization-service:4002
+      AUTH_SERVICE_URL: http://auth-service:4001
+      NOTIFICATION_SERVICE_URL: http://notification-service:4007
+      ALERT_MIN_SAMPLE_SIZE: 10
+      ALERT_MIN_CHANGE_PCT: 15
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4006/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      PORT: 4007
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/notification_db?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_FROM: "SentiLens <no-reply@sentilens.local>"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4007/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "8025:8025"   # web UI to view "sent" demo emails
+    networks: [backend]
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      organization-service:
+        condition: service_healthy
+      survey-service:
+        condition: service_healthy
+      feedback-service:
+        condition: service_healthy
+      analytics-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in .env}
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY:?set INTERNAL_SERVICE_KEY in .env}
+      AUTH_SERVICE_URL: http://auth-service:4001
+      ORGANIZATION_SERVICE_URL: http://organization-service:4002
+      SURVEY_SERVICE_URL: http://survey-service:4003
+      FEEDBACK_SERVICE_URL: http://feedback-service:4004
+      ANALYTICS_SERVICE_URL: http://analytics-service:4006
+      NOTIFICATION_SERVICE_URL: http://notification-service:4007
+      CORS_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+    ports:
+      - "8080:8080"   # the ONE port the frontend talks to
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8080/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks: [backend]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080
+    restart: unless-stopped
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    ports:
+      - "5173:80"   # http://localhost:5173 - the one URL to open in a browser
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  mongo_data:
