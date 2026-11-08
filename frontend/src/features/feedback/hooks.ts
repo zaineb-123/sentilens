@@ -4,6 +4,7 @@ export function useSubmitFeedback() { const qc = useQueryClient(); return useMut
 export function useReceiptStatus(code: string | undefined, opts?: { pollWhilePending?: boolean }) {
   return useQuery({
     queryKey: ["feedback", "receipt", code], queryFn: () => feedbackApi.receiptStatus(code as string), enabled: !!code,
+    retry: (n, err) => (err as { response?: { status?: number } })?.response?.status !== 404 && n < 1, // an unknown code will not appear on retry
     refetchInterval: (query) => { if (!opts?.pollWhilePending) return false; const status = query.state.data?.analysisStatus; return status === "pending" || status === "processing" ? 4000 : false; },
   });
 }

@@ -20,6 +20,7 @@ const SurveyAnswerPage = lazy(() => import("@/pages/employee/SurveyAnswerPage"))
 const AnonymousFeedbackPage = lazy(() => import("@/pages/employee/AnonymousFeedbackPage"));
 const FeedbackSuccessPage = lazy(() => import("@/pages/employee/FeedbackSuccessPage"));
 const ParticipationHistoryPage = lazy(() => import("@/pages/employee/ParticipationHistoryPage"));
+const MyFeedbackPage = lazy(() => import("@/pages/employee/MyFeedbackPage"));
 const ProfilePage = lazy(() => import("@/pages/employee/ProfilePage"));
 const PrivacySettingsPage = lazy(() => import("@/pages/employee/PrivacySettingsPage"));
 
@@ -89,6 +90,7 @@ export default function App() {
           <Route path="/app/feedback" element={<AnonymousFeedbackPage />} />
           <Route path="/app/feedback/success" element={<FeedbackSuccessPage />} />
         </Route>
+        <Route element={<AppShell titleKey="employee.v2.myfeedback.title" />}><Route path="/app/my-feedback" element={<MyFeedbackPage />} /></Route>
         <Route element={<AppShell titleKey="nav.history" />}><Route path="/app/history" element={<ParticipationHistoryPage />} /></Route>
         <Route element={<AppShell titleKey="nav.profile" />}><Route path="/app/profile" element={<ProfilePage />} /></Route>
         <Route element={<AppShell titleKey="nav.privacy" />}><Route path="/app/privacy" element={<PrivacySettingsPage />} /></Route>

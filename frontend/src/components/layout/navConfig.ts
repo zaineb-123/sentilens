@@ -1,7 +1,7 @@
 import {
   LayoutDashboard, ClipboardList, MessageSquareText, History, UserCircle, ShieldCheck,
   BarChart3, Smile, Tags, TrendingUp, Building2, Search, Bell, FileBarChart,
-  Users, Boxes, KeyRound, ScrollText, Activity, Settings as SettingsIcon,
+  Users, Boxes, KeyRound, ScrollText, Activity, Settings as SettingsIcon, Inbox,
 } from "lucide-react";
 import type { Role } from "@/types";
 import type { LucideIcon } from "lucide-react";
@@ -11,6 +11,7 @@ export const NAV_BY_ROLE: Record<Role, NavItem[]> = {
     { to: "/app/dashboard", labelKey: "nav.dashboard", icon: LayoutDashboard },
     { to: "/app/surveys", labelKey: "nav.surveys", icon: ClipboardList },
     { to: "/app/feedback", labelKey: "employee.feedback.anonymousTitle", icon: MessageSquareText },
+    { to: "/app/my-feedback", labelKey: "employee.v2.myfeedback.title", icon: Inbox },
     { to: "/app/history", labelKey: "nav.history", icon: History },
     { to: "/app/profile", labelKey: "nav.profile", icon: UserCircle },
     { to: "/app/privacy", labelKey: "nav.privacy", icon: ShieldCheck },
