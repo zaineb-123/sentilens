@@ -19,7 +19,7 @@ function LikertField({ value, onChange }: { question: Question; value?: string; 
   return (
     <div className="flex items-center justify-between gap-2">
       {[1, 2, 3, 4, 5].map((n) => (
-        <button key={n} type="button" onClick={() => onChange(String(n))} className={cn("flex h-10 flex-1 items-center justify-center rounded-xl border text-sm font-medium transition-colors", value === String(n) ? "border-primary bg-primary text-white" : "border-border bg-white text-slate-600 hover:bg-slate-50")}>{n}</button>
+        <button key={n} type="button" onClick={() => onChange(String(n))} className={cn("flex h-10 flex-1 items-center justify-center rounded-xl border text-sm font-medium transition-colors", value === String(n) ? "border-primary bg-primary text-white" : "border-border bg-white/5 text-slate-600 hover:bg-slate-50")}>{n}</button>
       ))}
     </div>
   );
@@ -33,7 +33,7 @@ function ChoiceField({ question, multi, value, onChange }: { question: Question;
   return (
     <div className="space-y-2">
       {question.options?.map((opt) => (
-        <button key={opt.key} type="button" onClick={() => toggle(opt.key)} className={cn("flex w-full items-center gap-3 rounded-xl border px-4 py-2.5 text-left text-sm transition-colors", selected.has(opt.key) ? "border-primary bg-primary-50 text-primary-700" : "border-border bg-white text-slate-700 hover:bg-slate-50")}>
+        <button key={opt.key} type="button" onClick={() => toggle(opt.key)} className={cn("flex w-full items-center gap-3 rounded-xl border px-4 py-2.5 text-left text-sm transition-colors", selected.has(opt.key) ? "border-primary bg-primary-50 text-primary-700" : "border-border bg-white/5 text-slate-700 hover:bg-slate-50")}>
           <span className={cn("flex h-4 w-4 items-center justify-center rounded border", multi ? "rounded-sm" : "rounded-full", selected.has(opt.key) ? "border-primary bg-primary" : "border-slate-300")} />
           {opt.label.fr || opt.label.en}
         </button>

@@ -15,7 +15,7 @@ export default function NotificationCenterPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-3">
       {data.map((n) => (
-        <Card key={n._id} className={cn(!n.read && "border-primary-200 bg-primary-50/30")} onClick={() => !n.read && markRead.mutate(n._id)}>
+        <Card key={n._id} className={cn(!n.read && "border-primary-200 bg-primary/10")} onClick={() => !n.read && markRead.mutate(n._id)}>
           <CardContent className="flex items-start gap-3">
             <Bell className={cn("mt-0.5 h-4 w-4 shrink-0", n.read ? "text-slate-300" : "text-primary-600")} />
             <div className="flex-1">

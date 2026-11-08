@@ -36,7 +36,13 @@ export type Sentiment = "positive" | "neutral" | "negative" | "mixed";
 export type Emotion = "joy" | "satisfaction" | "frustration" | "anger" | "sadness" | "fear" | "surprise" | "neutral";
 
 export interface FeedbackSubmitResponse { receiptCode: string; feedbackId: string; }
-export interface ReceiptStatus { analysisStatus: "pending" | "processing" | "done" | "failed"; submittedAt: string; }
+export interface AnalysisResult {
+  language: string | null;
+  sentiment: { label: Sentiment; confidence: number | null; scores: { positive: number; neutral: number; negative: number } | null };
+  emotions: { primary: Emotion | null; scores: { label: Emotion; score: number }[] };
+  aspects: { key: string; label?: string | Record<string, string>; sentiment: Sentiment }[];
+}
+export interface ReceiptStatus { analysisStatus: "pending" | "processing" | "done" | "failed"; submittedAt: string; /** Only present once done: the AI result of the caller's own message. */ result?: AnalysisResult; }
 export interface ExplorerFeedbackItem { comment: string; analysisStatus: string; day: string; source: "survey" | "anonymous_box" | "csv_import"; }
 
 export interface PrivacySuppressed { suppressed: true; reason: string; minGroupSize: number; count?: number; }

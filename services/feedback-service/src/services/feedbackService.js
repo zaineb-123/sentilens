@@ -35,9 +35,15 @@ async function submit({ orgId, userId, departmentId, surveyId, answers, comment 
 }
 
 async function statusByReceipt(orgId, code) {
-  const feedback = await Feedback.findOne({ orgId, receiptHash: hashReceipt(code) }).select("analysisStatus createdAt");
+  const feedback = await Feedback.findOne({ orgId, receiptHash: hashReceipt(code) }).select("_id analysisStatus createdAt");
   if (!feedback) throw notFound("no feedback found for this receipt code");
-  return { analysisStatus: feedback.analysisStatus, submittedAt: feedback.createdAt };
+  const out = { analysisStatus: feedback.analysisStatus, submittedAt: feedback.createdAt };
+  // The author (and only someone holding the receipt code) may see the AI result of their own message.
+  if (feedback.analysisStatus === "done") {
+    const result = await analysisClient.getResult(feedback._id);
+    if (result) out.result = result;
+  }
+  return out;
 }
 
 module.exports = { submit, statusByReceipt };

@@ -21,4 +21,30 @@ async function enqueue(feedbackDoc) {
   });
 }
 
-module.exports = { enqueue };
+/**
+ * Fetches the finished analysis of ONE feedback item so its author can see it via their receipt code.
+ * Returns only the fields the employee needs (never feedbackId/orgId/departmentId) and null on any
+ * failure, so a slow or unreachable Analysis Service can never break the receipt-status endpoint.
+ */
+async function getResult(feedbackId) {
+  if (!ANALYSIS_SERVICE_URL) return null;
+  try {
+    const res = await fetch(`${ANALYSIS_SERVICE_URL}/internal/analyses/${encodeURIComponent(String(feedbackId))}`, {
+      headers: { "X-Internal-Key": INTERNAL_KEY },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (!res.ok) return null;
+    const { analysis: a } = await res.json();
+    if (!a || !a.sentiment) return null;
+    return {
+      language: a.language?.code || null,
+      sentiment: { label: a.sentiment.label, confidence: a.sentiment.confidence ?? null, scores: a.sentiment.scores || null },
+      emotions: { primary: a.emotions?.primary || null, scores: (a.emotions?.scores || []).slice(0, 5).map(({ label, score }) => ({ label, score })) },
+      aspects: (a.aspects || []).slice(0, 8).map(({ key, label, sentiment }) => ({ key, label, sentiment })),
+    };
+  } catch {
+    return null;
+  }
+}
+
+module.exports = { enqueue, getResult };

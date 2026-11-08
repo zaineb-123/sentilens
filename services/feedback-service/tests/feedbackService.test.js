@@ -67,6 +67,34 @@ describe("statusByReceipt", () => {
     expect(Feedback.findOne).toHaveBeenCalledWith({ orgId: "org1", receiptHash: expect.any(String) });
   });
 
+  const doneDoc = { _id: "f1", analysisStatus: "done", createdAt: new Date() };
+
+  it("returns the AI result of the author's own message once the analysis is done", async () => {
+    Feedback.findOne.mockReturnValue({ select: () => Promise.resolve(doneDoc) });
+    const result = { language: "fr", sentiment: { label: "mixed", confidence: 0.8, scores: null }, emotions: { primary: "fear", scores: [] }, aspects: [] };
+    analysisClient.getResult.mockResolvedValue(result);
+    const out = await feedbackService.statusByReceipt("org1", "ABCDEF123456");
+    expect(analysisClient.getResult).toHaveBeenCalledWith("f1");
+    expect(out.result).toEqual(result);
+  });
+
+  it("does not ask the Analysis Service while the analysis is still pending or processing", async () => {
+    for (const analysisStatus of ["pending", "processing", "failed"]) {
+      Feedback.findOne.mockReturnValue({ select: () => Promise.resolve({ ...doneDoc, analysisStatus }) });
+      const out = await feedbackService.statusByReceipt("org1", "ABCDEF123456");
+      expect(out).not.toHaveProperty("result");
+    }
+    expect(analysisClient.getResult).not.toHaveBeenCalled();
+  });
+
+  it("still answers with the status when the result cannot be fetched", async () => {
+    Feedback.findOne.mockReturnValue({ select: () => Promise.resolve(doneDoc) });
+    analysisClient.getResult.mockResolvedValue(null);
+    const out = await feedbackService.statusByReceipt("org1", "ABCDEF123456");
+    expect(out.analysisStatus).toBe("done");
+    expect(out).not.toHaveProperty("result");
+  });
+
   it("404s on an unknown receipt", async () => {
     Feedback.findOne.mockReturnValue({ select: () => Promise.resolve(null) });
     await expect(feedbackService.statusByReceipt("org1", "AAAAAAAAAAAA")).rejects.toMatchObject({ status: 404 });

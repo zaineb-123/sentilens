@@ -27,11 +27,11 @@ export default function ResetPasswordPage() {
   };
 
   if (!token) {
-    return <div className="flex min-h-screen items-center justify-center bg-bg p-6 text-center text-sm text-slate-500">Missing reset token. Use the link from your email, or <Link to="/forgot-password" className="text-primary-600 hover:underline">request a new one</Link>.</div>;
+    return <div className="flex min-h-screen items-center justify-center p-6 text-center text-sm text-slate-500">Missing reset token. Use the link from your email, or <Link to="/forgot-password" className="text-primary-600 hover:underline">request a new one</Link>.</div>;
   }
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg p-6">
-      <div className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-card">
+    <div className="flex min-h-screen items-center justify-center p-6">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-white/5 p-6 shadow-card">
         <h1 className="mb-5 text-lg font-semibold text-slate-900">{t("auth.resetPassword")}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div><Label htmlFor="password">{t("auth.newPassword")}</Label><Input id="password" type="password" autoComplete="new-password" {...register("password")} /><FieldError>{errors.password?.message}</FieldError></div>

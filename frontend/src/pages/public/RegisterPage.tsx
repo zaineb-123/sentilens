@@ -10,7 +10,7 @@ import { Input, Label, FieldError } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { apiErrorMessage } from "@/lib/apiClient";
 import { setAccessToken } from "@/lib/tokenStore";
-import { Sparkles } from "lucide-react";
+import { Logo } from "@/components/brand/Logo";
 
 const schema = z.object({ email: z.string().email(), invitationCode: z.string().min(6, "Invitation code looks too short"), password: z.string().min(10, "At least 10 characters") });
 type FormValues = z.infer<typeof schema>;
@@ -36,13 +36,12 @@ export default function RegisterPage() {
 };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg p-6">
+    <div className="flex min-h-screen items-center justify-center p-6">
       <div className="w-full max-w-sm">
         <Link to="/" className="mb-8 flex items-center justify-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary"><Sparkles className="h-5 w-5 text-white" /></div>
-          <span className="text-lg font-semibold text-slate-900">{t("app.name")}</span>
+          <Logo />
         </Link>
-        <div className="rounded-2xl border border-border bg-white p-6 shadow-card">
+        <div className="rounded-2xl border border-border bg-white/5 p-6 shadow-card">
           <h1 className="mb-1 text-lg font-semibold text-slate-900">{t("auth.register")}</h1>
           <p className="mb-5 text-sm text-slate-500">Registration is invite-only — ask your administrator for a code.</p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>

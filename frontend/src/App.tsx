@@ -1,53 +1,54 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { PageLoader } from "@/components/domain/States";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import { AppShell } from "@/components/layout/AppShell";
 import { useAuth } from "@/features/auth/AuthContext";
 import { ROLE_HOME } from "@/components/layout/navConfig";
 
-import LandingPage from "@/pages/public/LandingPage";
-import HowItWorksPage from "@/pages/public/HowItWorksPage";
-import PrivacyPage from "@/pages/public/PrivacyPage";
-import LoginPage from "@/pages/public/LoginPage";
-import RegisterPage from "@/pages/public/RegisterPage";
-import ForgotPasswordPage from "@/pages/public/ForgotPasswordPage";
-import ResetPasswordPage from "@/pages/public/ResetPasswordPage";
-import DemoPage from "@/pages/public/DemoPage";
+const LandingPage = lazy(() => import("@/pages/public/LandingPage"));
+const HowItWorksPage = lazy(() => import("@/pages/public/HowItWorksPage"));
+const PrivacyPage = lazy(() => import("@/pages/public/PrivacyPage"));
+const LoginPage = lazy(() => import("@/pages/public/LoginPage"));
+const RegisterPage = lazy(() => import("@/pages/public/RegisterPage"));
+const ForgotPasswordPage = lazy(() => import("@/pages/public/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("@/pages/public/ResetPasswordPage"));
 
-import EmployeeDashboardPage from "@/pages/employee/EmployeeDashboardPage";
-import SurveysListPage from "@/pages/employee/SurveysListPage";
-import SurveyAnswerPage from "@/pages/employee/SurveyAnswerPage";
-import AnonymousFeedbackPage from "@/pages/employee/AnonymousFeedbackPage";
-import FeedbackSuccessPage from "@/pages/employee/FeedbackSuccessPage";
-import ParticipationHistoryPage from "@/pages/employee/ParticipationHistoryPage";
-import ProfilePage from "@/pages/employee/ProfilePage";
-import PrivacySettingsPage from "@/pages/employee/PrivacySettingsPage";
+const EmployeeDashboardPage = lazy(() => import("@/pages/employee/EmployeeDashboardPage"));
+const SurveysListPage = lazy(() => import("@/pages/employee/SurveysListPage"));
+const SurveyAnswerPage = lazy(() => import("@/pages/employee/SurveyAnswerPage"));
+const AnonymousFeedbackPage = lazy(() => import("@/pages/employee/AnonymousFeedbackPage"));
+const FeedbackSuccessPage = lazy(() => import("@/pages/employee/FeedbackSuccessPage"));
+const ParticipationHistoryPage = lazy(() => import("@/pages/employee/ParticipationHistoryPage"));
+const ProfilePage = lazy(() => import("@/pages/employee/ProfilePage"));
+const PrivacySettingsPage = lazy(() => import("@/pages/employee/PrivacySettingsPage"));
 
-import HrDashboardPage from "@/pages/hr/HrDashboardPage";
-import SentimentAnalyticsPage from "@/pages/hr/SentimentAnalyticsPage";
-import EmotionAnalyticsPage from "@/pages/hr/EmotionAnalyticsPage";
-import AspectAnalyticsPage from "@/pages/hr/AspectAnalyticsPage";
-import TrendsPage from "@/pages/hr/TrendsPage";
-import DepartmentComparisonPage from "@/pages/hr/DepartmentComparisonPage";
-import FeedbackExplorerPage from "@/pages/hr/FeedbackExplorerPage";
-import SurveyManagementPage from "@/pages/hr/SurveyManagementPage";
-import SurveyBuilderPage from "@/pages/hr/SurveyBuilderPage";
-import SurveyResultsPage from "@/pages/hr/SurveyResultsPage";
-import AlertsPage from "@/pages/hr/AlertsPage";
-import ReportsPage from "@/pages/hr/ReportsPage";
+const HrDashboardPage = lazy(() => import("@/pages/hr/HrDashboardPage"));
+const SentimentAnalyticsPage = lazy(() => import("@/pages/hr/SentimentAnalyticsPage"));
+const EmotionAnalyticsPage = lazy(() => import("@/pages/hr/EmotionAnalyticsPage"));
+const AspectAnalyticsPage = lazy(() => import("@/pages/hr/AspectAnalyticsPage"));
+const TrendsPage = lazy(() => import("@/pages/hr/TrendsPage"));
+const DepartmentComparisonPage = lazy(() => import("@/pages/hr/DepartmentComparisonPage"));
+const FeedbackExplorerPage = lazy(() => import("@/pages/hr/FeedbackExplorerPage"));
+const SurveyManagementPage = lazy(() => import("@/pages/hr/SurveyManagementPage"));
+const SurveyBuilderPage = lazy(() => import("@/pages/hr/SurveyBuilderPage"));
+const SurveyResultsPage = lazy(() => import("@/pages/hr/SurveyResultsPage"));
+const AlertsPage = lazy(() => import("@/pages/hr/AlertsPage"));
+const ReportsPage = lazy(() => import("@/pages/hr/ReportsPage"));
 
-import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
-import AdminUsersPage from "@/pages/admin/AdminUsersPage";
-import AdminOrganizationsPage from "@/pages/admin/AdminOrganizationsPage";
-import AdminDepartmentsPage from "@/pages/admin/AdminDepartmentsPage";
-import AdminRolesPage from "@/pages/admin/AdminRolesPage";
-import AdminAuditLogsPage from "@/pages/admin/AdminAuditLogsPage";
-import AdminMonitoringPage from "@/pages/admin/AdminMonitoringPage";
-import AdminSettingsPage from "@/pages/admin/AdminSettingsPage";
+const AdminDashboardPage = lazy(() => import("@/pages/admin/AdminDashboardPage"));
+const AdminUsersPage = lazy(() => import("@/pages/admin/AdminUsersPage"));
+const AdminOrganizationsPage = lazy(() => import("@/pages/admin/AdminOrganizationsPage"));
+const AdminDepartmentsPage = lazy(() => import("@/pages/admin/AdminDepartmentsPage"));
+const AdminRolesPage = lazy(() => import("@/pages/admin/AdminRolesPage"));
+const AdminAuditLogsPage = lazy(() => import("@/pages/admin/AdminAuditLogsPage"));
+const AdminMonitoringPage = lazy(() => import("@/pages/admin/AdminMonitoringPage"));
+const AdminSettingsPage = lazy(() => import("@/pages/admin/AdminSettingsPage"));
 
-import NotFoundPage from "@/pages/system/NotFoundPage";
-import UnauthorizedPage from "@/pages/system/UnauthorizedPage";
-import ServiceUnavailablePage from "@/pages/system/ServiceUnavailablePage";
-import NotificationCenterPage from "@/pages/system/NotificationCenterPage";
+const NotFoundPage = lazy(() => import("@/pages/system/NotFoundPage"));
+const UnauthorizedPage = lazy(() => import("@/pages/system/UnauthorizedPage"));
+const ServiceUnavailablePage = lazy(() => import("@/pages/system/ServiceUnavailablePage"));
+const NotificationCenterPage = lazy(() => import("@/pages/system/NotificationCenterPage"));
 
 function RoleHomeRedirect() {
   const { user } = useAuth();
@@ -56,6 +57,7 @@ function RoleHomeRedirect() {
 
 export default function App() {
   return (
+    <Suspense fallback={<PageLoader />}>
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
@@ -64,7 +66,6 @@ export default function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/demo" element={<DemoPage />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="/service-unavailable" element={<ServiceUnavailablePage />} />
 
@@ -124,5 +125,6 @@ export default function App() {
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
+    </Suspense>
   );
 }

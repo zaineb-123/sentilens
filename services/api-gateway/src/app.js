@@ -3,6 +3,8 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
+// Receipt codes are bearer secrets for an anonymous author: never write them to access logs.
+morgan.token("safe-url", (req) => (req.originalUrl || req.url).replace(/(\/receipt\/)[^/?#]+/i, "$1[redacted]"));
 const swaggerUi = require("swagger-ui-express");
 const rateLimit = require("express-rate-limit");
 const { errorHandler, notFoundHandler, requireAuth } = require("@sentilens/shared");
@@ -24,7 +26,7 @@ function createApp() {
 }));
   app.use(correlationId);
   app.use(rateLimit({ windowMs: env.rateLimit.windowMs, limit: env.rateLimit.limit, standardHeaders: true, legacyHeaders: false }));
-  if (process.env.NODE_ENV !== "test") app.use(morgan("tiny"));
+  if (process.env.NODE_ENV !== "test") app.use(morgan(":method :safe-url :status :res[content-length] - :response-time ms"));
 
   // Body parsers: only engage for matching content-types, so other requests (GET/DELETE with
   // no body, or bodies this gateway doesn't need to inspect) pass through untouched.

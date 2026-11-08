@@ -3,6 +3,8 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
+// Receipt codes are bearer secrets for an anonymous author: never write them to access logs.
+morgan.token("safe-url", (req) => (req.originalUrl || req.url).replace(/(\/receipt\/)[^/?#]+/i, "$1[redacted]"));
 const swaggerUi = require("swagger-ui-express");
 const rateLimit = require("express-rate-limit");
 const { errorHandler, notFoundHandler } = require("@sentilens/shared");
@@ -17,7 +19,7 @@ function createApp() {
   app.use(cors({ origin: process.env.CORS_ORIGIN || true, credentials: true }));
   app.use(express.json({ limit: "300kb" }));
   app.use(rateLimit({ windowMs: 60 * 1000, limit: 300, standardHeaders: true, legacyHeaders: false }));
-  if (process.env.NODE_ENV !== "test") app.use(morgan("tiny"));
+  if (process.env.NODE_ENV !== "test") app.use(morgan(":method :safe-url :status :res[content-length] - :response-time ms"));
 
   app.get("/health", (req, res) => res.json({ status: "ok", service: "feedback-service" }));
   app.get("/health/ready", (req, res) => {

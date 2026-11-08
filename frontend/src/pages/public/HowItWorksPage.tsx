@@ -15,7 +15,7 @@ export default function HowItWorksPage() {
       <h1 className="mb-8 text-2xl font-semibold text-slate-900">{t("landing.how.title")}</h1>
       <div className="space-y-6">
         {STEPS.map(({ icon: Icon, title, body }, i) => (
-          <div key={title} className="flex gap-4 rounded-2xl border border-border bg-white p-5 shadow-card">
+          <div key={title} className="flex gap-4 rounded-2xl border border-border bg-white/5 p-5 shadow-card">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600"><Icon className="h-5 w-5" /></div>
             <div><p className="text-sm font-semibold text-slate-900">{i + 1}. {title}</p><p className="mt-1 text-sm text-slate-600">{body}</p></div>
           </div>

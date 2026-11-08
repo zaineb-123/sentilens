@@ -1,6 +1,7 @@
 "use strict";
 const { Router } = require("express");
 const multer = require("multer");
+const rateLimit = require("express-rate-limit");
 const { validate, requireAuth, requireRole } = require("@sentilens/shared");
 const env = require("../config/env");
 const v = require("../validators/feedbackValidators");
@@ -8,6 +9,9 @@ const feedback = require("../controllers/feedbackController");
 const imports = require("../controllers/importController");
 
 const router = Router();
+// Receipt codes are 48-bit bearer secrets; the page polls ~15x/min per user, so 60/min/IP is generous for
+// honest use yet makes guessing hopeless. Applied before auth so unauthenticated probing is throttled too.
+const receiptLimiter = rateLimit({ windowMs: 60 * 1000, limit: 60, standardHeaders: true, legacyHeaders: false });
 const auth = requireAuth(env.jwtSecret);
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -17,7 +21,7 @@ const upload = multer({
 
 // --- Employee ---
 router.post("/feedback", auth, requireRole("employee"), validate(v.submitFeedbackSchema), feedback.submit);
-router.get("/feedback/receipt/:code", auth, requireRole("employee"), feedback.statusByReceipt);
+router.get("/feedback/receipt/:code", receiptLimiter, auth, requireRole("employee"), feedback.statusByReceipt);
 
 // --- HR ---
 router.get("/feedback", auth, requireRole("hr"), validate(v.explorerQuerySchema, "query"), feedback.explore);

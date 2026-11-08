@@ -8,7 +8,7 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { Input, Label, FieldError } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { apiErrorMessage } from "@/lib/apiClient";
-import { Sparkles } from "lucide-react";
+import { Logo } from "@/components/brand/Logo";
 
 const schema = z.object({ email: z.string().email(), password: z.string().min(1) });
 type FormValues = z.infer<typeof schema>;
@@ -31,13 +31,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg p-6">
+    <div className="flex min-h-screen items-center justify-center p-6">
       <div className="w-full max-w-sm">
         <Link to="/" className="mb-8 flex items-center justify-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary"><Sparkles className="h-5 w-5 text-white" /></div>
-          <span className="text-lg font-semibold text-slate-900">{t("app.name")}</span>
+          <Logo />
         </Link>
-        <div className="rounded-2xl border border-border bg-white p-6 shadow-card">
+        <div className="rounded-2xl border border-border bg-white/5 p-6 shadow-card">
           <h1 className="mb-5 text-lg font-semibold text-slate-900">{t("auth.login")}</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
             <div><Label htmlFor="email">{t("auth.email")}</Label><Input id="email" type="email" autoComplete="email" {...register("email")} /><FieldError>{errors.email?.message}</FieldError></div>

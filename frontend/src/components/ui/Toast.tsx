@@ -23,7 +23,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       <ToastPrimitive.Provider swipeDirection="right">
         {children}
         {items.map((item) => (
-          <ToastPrimitive.Root key={item.id} className="flex items-start gap-3 rounded-xl border border-border bg-white p-4 shadow-lg">
+          <ToastPrimitive.Root key={item.id} className="flex items-start gap-3 rounded-xl border border-border bg-[#0E1432] p-4 text-slate-900 shadow-2xl">
             {icons[item.tone]}
             <div>
               <ToastPrimitive.Title className="text-sm font-semibold">{item.title}</ToastPrimitive.Title>

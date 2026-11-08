@@ -18,8 +18,8 @@ export default function ForgotPasswordPage() {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormValues>({ resolver: zodResolver(schema) });
   const onSubmit = async (values: FormValues) => { await authApi.forgotPassword(values.email); setSent(true); };
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg p-6">
-      <div className="w-full max-w-sm rounded-2xl border border-border bg-white p-6 shadow-card">
+    <div className="flex min-h-screen items-center justify-center p-6">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-white/5 p-6 shadow-card">
         <h1 className="mb-5 text-lg font-semibold text-slate-900">{t("auth.forgotPassword")}</h1>
         {sent ? (
           <div className="flex flex-col items-center gap-2 py-4 text-center"><CheckCircle2 className="h-8 w-8 text-positive-600" /><p className="text-sm text-slate-600">{t("auth.resetSent")}</p></div>

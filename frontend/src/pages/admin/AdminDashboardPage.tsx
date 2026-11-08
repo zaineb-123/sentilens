@@ -17,7 +17,7 @@ export default function AdminDashboardPage() {
         <KpiCard label="Departments" value={departments?.length ?? "—"} icon={Building2} tone="slate" />
         <KpiCard label="System" value={health?.overall === "up" ? "Operational" : health ? "Degraded" : "—"} icon={Activity} tone={health?.overall === "up" ? "positive" : "warning"} />
       </div>
-      <div className="flex items-center gap-2 rounded-xl border border-border bg-white p-4 text-sm text-slate-600">
+      <div className="flex items-center gap-2 rounded-xl border border-border bg-white/5 p-4 text-sm text-slate-600">
         <ShieldCheck className="h-4 w-4 text-primary-600" />
         SentiLens analyzes feedback content and organization-wide trends only — it never profiles or diagnoses individual employees.
         {health && <Badge tone={health.overall === "up" ? "positive" : "warning"} className="ml-auto">{health.overall}</Badge>}

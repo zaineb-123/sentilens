@@ -11,7 +11,7 @@ export default function AdminMonitoringPage() {
   if (isError || !data) return <ErrorState onRetry={() => refetch()} />;
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between rounded-xl border border-border bg-white p-4">
+      <div className="flex items-center justify-between rounded-xl border border-border bg-white/5 p-4">
         <span className="text-sm font-medium text-slate-700">{t("admin.monitoring.title")}</span>
         <Badge tone={data.overall === "up" ? "positive" : "warning"}>{t(`admin.monitoring.overall.${data.overall}`)}</Badge>
       </div>
